@@ -8,7 +8,7 @@ var MongoClient = require('mongodb').MongoClient
 var ID_MONGO = 'mongodb://projetSportif:alex123456789aze@dogen.mongohq.com:10036/ProjetEsme';
 
 //collections
-var COLLECTION = 'collection';
+var COLLECTIONNAME = 'pronosSportifAdd Document';
 //messages d'erreur
 var ERR_CONNECTION_BASE = 'erreur lors de la connection à la base de données';
 var CATEGORIE_ERREUR = 'ERROR';
@@ -28,7 +28,7 @@ exports.signin = function(data, res){//fonction pour ajouter un USER
 	    	throw err;
 	    	res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "1", err_message:ERR_CONNECTION_BASE}));
 	    }		
-		var collection = db.collection(BOURSE_USERS);
+		var collection = db.collection(COLLECTIONNAME);
 		collection.find({login:data.formLogin, pwd:data.formPassword}).toArray(function(err, results){			
 			if (err) {
 				throw err;
@@ -81,7 +81,7 @@ exports.valid_cookie = function(c, obj, fct){
 	    	throw err;
 	    	res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "71", err_message:ERR_CONNECTION_BASE}));
 	    }	
-		var collection = db.collection(BOURSE_USERS);
+		var collection = db.collection(COLLECTIONNAME);
 		c = c.split("cookieName=");//car cookieName=rom19282839" par excemple donc on eneleve le cookieName
 		 collection.find({cookieValue: c[1]}).toArray(function(err, results) {
 		 if (err){		 	
