@@ -1,0 +1,27 @@
+{
+  "id"="idseq",
+  "type"="equipe"
+  "team": "PSG",
+  "country": "france",
+}
+
+{
+  "id"="idseq"
+  "type"="competition",
+  "dateMatch": [
+    {
+      "competition": "ligue1",
+      "equipeA": "PSG",
+      "equipeB": "OM",
+      "heure": "20h30",
+      "primary": true
+    },
+    {
+      "competition": "coupeLigue",
+      "equipeA": "OL",
+      "equipeB": "ASE",
+      "heure": "20h30",
+      "primary": true
+    }
+  ]
+}
