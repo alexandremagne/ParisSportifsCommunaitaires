@@ -14,6 +14,32 @@ var ERR_CONNECTION_BASE = 'erreur lors de la connection à la base de données';
 var CATEGORIE_ERREUR = 'ERROR';
 var CATEGORIE_OK = 'SUCCESS';
 
+
+// Ajout AM 16/12/15 23h
+exports.signup = function(b,res){
+	var NOM_METHODE = 'SIGNUP';
+	MongoClient.connect(ID_MONGO, function(err, db) {
+	if(err) {//en cas d'erreur de connection
+		res.writeHead(503, {"Content-Type": "application/json" });
+		res.end(JSON.stringify({categorie:CATEGORIE_ERREUR, err_methode: NOM_METHODE, err_ligne: "1", err_message:ERR_CONNECTION_BASE}));
+		return;
+	}else{
+		res.writeHead(200, {"Content-Type": "application/json" });
+		var collection = db.collection(COLLECTIONNAME);
+		collection.insert(b,function(err, doc){
+			if(err){				
+				res.end(JSON.stringify({categorie:CATEGORIE_ERREUR, err_methode: NOM_METHODE, err_ligne: "2", err_message:"register-doublon"}));
+				db.close();
+			}else{				
+				res.end(JSON.stringify({categorie:CATEGORIE_OK, suc_methode: NOM_METHODE}));
+				db.close();
+			}
+		});
+	}
+});
+};
+
+
 /**
 * RCU - 09/08/2015 - Ajout fonction sign-in, pour se connecter à son compte
 * parametres entres : login et password
@@ -98,7 +124,5 @@ exports.valid_cookie = function(c, obj, fct){
 	}
 };
 // fin RCU - 09/08/2015 - Ajout fonction qui verifie l'existence d'un cookie dans la DB
-
-
 
 

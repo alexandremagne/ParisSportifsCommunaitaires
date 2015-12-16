@@ -109,6 +109,9 @@ go_post:
 		this.b = b;
 		if(b.action == "signin") {
 			db.signin(b, this.resp);
+		}else if(b.action = "signup"){
+			b.admin = 0; // Il ne s'agit pas d'un admin
+			db.signup(b, this.resp);
 		}else {
 			db.valid_cookie(this.req.headers.cookie, this, "cb_cookie");
 		}	
