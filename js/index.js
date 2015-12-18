@@ -70,24 +70,18 @@ obj.log_callback = function () {
 	if (this.readyState == 4 && this.status == 200) {
 		var r = JSON.parse(this.responseText);		
 		if (r.categorie == "SUCCESS"){
-			if(r.suc_methode == "SIGNIN"){
-				console.log('connected !');
+			if(r.suc_methode == "SIGNIN"){				
 				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
 				window.location = "/html/accueil.html";
-			}else if(r.suc_methode == "SIGNUP"){	
-				console.log('Registred !');
+			}else if(r.suc_methode == "SIGNUP"){					
 				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
-				// window.reload()
+				window.location = "/html/accueil.html";
 			}		
 		}else if(r.categorie == "ERROR"){
 			if(r.err_methode == "SIGNIN"){
-				console.log(r.err_message);
-				console.log(r.err_ligne);
 				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
 				document.getElementById("signinError").innerHTML="Your login or password are false.";
-			}else if(r.err_methode == "SIGNUP"){	
-				console.log(r.err_message);
-				console.log(r.err_ligne);
+			}else if(r.err_methode == "SIGNUP"){		
 				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
 			}		
 		}

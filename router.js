@@ -150,8 +150,6 @@ function () {
 		this.path = "./index.html";
 		this.filetype = "html";
 	}
-	
-	if (this.pathname[0] == "data.json") console.log(util.log("========== bonjour"));
 	this.load_file();	
 },
 	

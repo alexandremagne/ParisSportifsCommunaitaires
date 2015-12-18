@@ -26,11 +26,17 @@ exports.signup = function(b,res){
 	}else{
 		res.writeHead(200, {"Content-Type": "application/json" });
 		var collection = db.collection(COLLECTIONNAME);
+		var cookieValue =  b.pseudo.substring(0,3) + Math.floor(Math.random() * 100000000);//pour cookieName	
+		var cookieExpire = new Date(new Date().getTime()+900000).toUTCString();//si rememberme pas cochee, 15min
+		b.cookieValue =cookieValue;
+		b.rememberme = false;
 		collection.insert(b,function(err, doc){
 			if(err){				
 				res.end(JSON.stringify({categorie:CATEGORIE_ERREUR, err_methode: NOM_METHODE, err_ligne: "2", err_message:"signUpDoublon"}));
 				db.close();
-			}else{				
+			}else{
+
+				res.writeHead(200, {"Content-Type": "'text/plain'", "Set-Cookie" : 'cookieName='+cookieValue+';expires='+cookieExpire});//on ecrit le cookie chez le client					
 				res.end(JSON.stringify({categorie:CATEGORIE_OK, suc_methode: NOM_METHODE}));
 				db.close();
 			}
@@ -55,7 +61,7 @@ exports.signin = function(data, res){//fonction pour ajouter un USER
 	    	res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "1", err_message:ERR_CONNECTION_BASE}));
 	    }		
 		var collection = db.collection(COLLECTIONNAME);
-		collection.find({login:data.formLogin, pwd:data.formPassword}).toArray(function(err, results){			
+		collection.find({pseudo:data.formLogin, pwd:data.formPassword}).toArray(function(err, results){			
 			if (err) {
 				throw err;
 				res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "2", err_message:ERR_CONNECTION_BASE}));
