@@ -8,14 +8,14 @@ var MongoClient = require('mongodb').MongoClient
 var ID_MONGO = 'mongodb://projetSportif:alex123456789aze@dogen.mongohq.com:10036/ProjetEsme';
 
 //collections
-var COLLECTIONNAME = 'pronosSportifAdd Document';
+var COLLECTIONNAME = 'pronosSportif';//il y a deja une collection
 //messages d'erreur
 var ERR_CONNECTION_BASE = 'erreur lors de la connection à la base de données';
 var CATEGORIE_ERREUR = 'ERROR';
 var CATEGORIE_OK = 'SUCCESS';
 
 
-// Ajout AM 16/12/15 23h
+// Ajout AM 16/12/15
 exports.signup = function(b,res){
 	var NOM_METHODE = 'SIGNUP';
 	MongoClient.connect(ID_MONGO, function(err, db) {
@@ -28,7 +28,7 @@ exports.signup = function(b,res){
 		var collection = db.collection(COLLECTIONNAME);
 		collection.insert(b,function(err, doc){
 			if(err){				
-				res.end(JSON.stringify({categorie:CATEGORIE_ERREUR, err_methode: NOM_METHODE, err_ligne: "2", err_message:"register-doublon"}));
+				res.end(JSON.stringify({categorie:CATEGORIE_ERREUR, err_methode: NOM_METHODE, err_ligne: "2", err_message:"signUpDoublon"}));
 				db.close();
 			}else{				
 				res.end(JSON.stringify({categorie:CATEGORIE_OK, suc_methode: NOM_METHODE}));
@@ -38,7 +38,7 @@ exports.signup = function(b,res){
 	}
 });
 };
-
+//fin Ajout AM 16/12/15
 
 /**
 * RCU - 09/08/2015 - Ajout fonction sign-in, pour se connecter à son compte
@@ -60,34 +60,34 @@ exports.signin = function(data, res){//fonction pour ajouter un USER
 				throw err;
 				res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "2", err_message:ERR_CONNECTION_BASE}));
 			}
-		if (results[0]){//si on trouve bien le login et le PW associé dans la base de donnée 
-			var cookieValue =  data.formLogin.substring(0,3) + Math.floor(Math.random() * 100000000);//pour cookieName
-			if (data.formRememberMe == true){//si la case rememberme est cochée
-				var cookieExpire = new Date(new Date().getTime()+604800000).toUTCString();
-			}
-			else{
-				var cookieExpire = new Date(new Date().getTime()+900000).toUTCString();//si rememberme pas cochee
-			}			
-			collection.update(
-				{login:data.formLogin, pwd:data.formPassword},
-				{$set:
-					{					 					 
-					 rememberme: data.formRememberMe,
-					 cookieValue: cookieValue
-					}
-				},
-				{upsert: false},function(err){
-				if (err){
-					throw err;
-					res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "3", err_message:'erreur methode update inconnue'}));
+			if (results[0]){//si on trouve bien le login et le PW associé dans la base de donnée 
+				var cookieValue =  data.formLogin.substring(0,3) + Math.floor(Math.random() * 100000000);//pour cookieName
+				if (data.formRememberMe == true){//si la case rememberme est cochée, 1 an
+					var cookieExpire = new Date(new Date().getTime()+604800000).toUTCString();
 				}
-			});
-			res.writeHead(200, {"Content-Type": "'text/plain'", "Set-Cookie" : 'cookieName='+cookieValue+';expires='+cookieExpire});//on ecrit le cookie chez le client					
-			res.end(JSON.stringify({categorie:CATEGORIE_OK,suc_methode:NOM_METHODE}));
-		}else{
-			res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "4", err_message:'Login or password are false !'}));
-		}
-		db.close;
+				else{
+					var cookieExpire = new Date(new Date().getTime()+900000).toUTCString();//si rememberme pas cochee, 15min
+				}			
+				collection.update(
+					{login:data.formLogin, pwd:data.formPassword},
+					{$set:
+						{					 					 
+						 rememberme: data.formRememberMe,
+						 cookieValue: cookieValue
+						}
+					},
+					{upsert: false},function(err){
+					if (err){
+						throw err;
+						res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "3", err_message:'erreur methode update inconnue'}));
+					}
+				});
+				res.writeHead(200, {"Content-Type": "'text/plain'", "Set-Cookie" : 'cookieName='+cookieValue+';expires='+cookieExpire});//on ecrit le cookie chez le client					
+				res.end(JSON.stringify({categorie:CATEGORIE_OK,suc_methode:NOM_METHODE}));
+			}else{
+				res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "4", err_message:'Login or password are false !'}));
+			}
+			db.close();
 		});	    
 	});
 };

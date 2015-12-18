@@ -3,8 +3,18 @@ var data = {} //objet transmis au routeur
 var contenuHTML = {} // Contient le code html pour remplacer le gif annimé
 
 obj.start = function(){
+	obj.remplirDateFormulaire();
 	obj.formSignin();
 	obj.formSignup();
+};
+
+obj.remplirDateFormulaire = function(){
+	for(var i = new Date().getFullYear(); i >1989; i--){
+		document.getElementById("register_birthdate_year").innerHTML+= "<option value="+i+">"+i+"</option>";
+	}
+	for(var i = 1; i <32; i++){
+		document.getElementById("register_birthdate_day").innerHTML+= "<option value="+i+">"+i+"</option>";
+	}
 };
 
 obj.formSignin = function(){
