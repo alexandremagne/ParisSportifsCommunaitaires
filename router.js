@@ -26,8 +26,6 @@ srouter = function (req, resp) {
 	 if (req && resp) {
 			this.req = req;
 			this.resp = resp;
-			//console.log("---------: "+util.inspect(req, false, null));
-			//console.log("---------: "+util.inspect(resp, false, null));
 			this.pathname = "";
 			this.filetype = "";
 			this.path = "";
@@ -69,7 +67,6 @@ get_method:
 		this.pathname = this.pathname.splice(1, this.pathname.length - 1); this.filetype = this.pathname[this.pathname.length - 1].split(".");
 		this.filetype = this.filetype[this.filetype.length - 1];
 		this.path = "." + u.path; //the website is one directory upper than the node server
-		
 		if (this.pathname[0] == "html")//pour voir dans quel page on va
 			{
 				db.valid_cookie(this.req.headers.cookie, this, "check_cookie");
@@ -82,8 +79,8 @@ get_method:
 check_cookie:
 	function (ret) {		
 		if (ret) {				
-				this.read_file();			
-		}else{
+			this.read_file();			
+		}else{			
 			this.path = "./index.html";
 			this.read_file();			
 		}
@@ -163,7 +160,7 @@ load_file:
 						util.log("ERROR - Problem reading file : " + e);
 					} else {
 						_this.file = d;
-						util.puts("GET on path : " + util.inspect(_this.path));
+						//util.puts("GET on path : " + util.inspect(_this.path));
 						_this.file_processing();
 			} });
 			} else {
