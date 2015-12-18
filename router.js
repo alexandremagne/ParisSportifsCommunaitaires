@@ -110,8 +110,9 @@ go_post:
 		if(b.action == "signin") {
 			db.signin(b, this.resp);
 		}else if(b.action = "signup"){
-			b.admin = 0; // Il ne s'agit pas d'un admin
-			db.signup(b, this.resp);
+			var objDb = {};//on cree nouvel objet pour etre sur qu on insere bien ce que l on veut dans la base : pseudo, mail...
+			verificationFormulaireRegister(objDb,b);			
+			db.signup(objDb, this.resp);
 		}else {
 			db.valid_cookie(this.req.headers.cookie, this, "cb_cookie");
 		}	
@@ -194,7 +195,18 @@ function () {
 	}
 };
 
-
-
-
 var a = {a: "arg1" , b: 3 };
+
+var verificationFormulaireRegister = function(obj1,obj2){
+	obj1.pseudo = obj2.pseudo;
+	obj1.email = obj2.email;
+	obj1.pwd = obj2.pwd;
+	//date creation
+	obj1.dateCreation = new Date().getTime();
+	obj1.dateDerniereConnexion = new Date().getTime();
+	obj1.cd_langue = "fr";//pour le moment, sinon à faire en fonction du navigateur
+	obj1.cd_profil = "user";
+	obj1.dateLock = -1;
+	obj1.flagLock = 0;//non bloqué
+	obj1.nombreTentative = 0;
+}

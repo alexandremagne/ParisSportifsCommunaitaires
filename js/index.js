@@ -3,7 +3,7 @@ var data = {} //objet transmis au routeur
 var contenuHTML = {} // Contient le code html pour remplacer le gif annimé
 
 obj.start = function(){
-	obj.remplirDateFormulaire();
+	//obj.remplirDateFormulaire();
 	obj.formSignin();
 	obj.formSignup();
 };
@@ -19,7 +19,7 @@ obj.remplirDateFormulaire = function(){
 
 obj.formSignin = function(){
 	document.getElementById('formSignin').onsubmit = function(event){
-		document.getElementById('signinAjaxLoader').innerHTML ='<img class="col-md-offset-6" src="../images/ajax-loader.gif" width="60" height="60" />';
+		obj.replace_content_by_animation_GIF_loader('signinAjaxLoader');
 		data.action = "signin"
 		data.formLogin = document.getElementById('formLogin').value.toLowerCase();
 		data.formPassword = document.getElementById('formPassword').value;
@@ -32,12 +32,12 @@ obj.formSignin = function(){
 obj.formSignup = function(){
 	document.getElementById('formSignup').onsubmit = function(event){
 		data.action = "signup"; // action a traité pour le routeur
-		data.name = document.getElementById('register_name').value;
-		data.firstname = document.getElementById('register_firstname').value;
-		data.register_birthdate_day = document.getElementById('register_birthdate_day').value;
-		data.register_birthdate_month = document.getElementById('register_birthdate_month').value;
-		data.register_birthdate_year = document.getElementById('register_birthdate_year').value;
-		data.male = document.getElementById("register_male").checked;
+		data.pseudo = document.getElementById('register_name').value;
+		//data.firstname = document.getElementById('register_firstname').value;
+		//data.register_birthdate_day = document.getElementById('register_birthdate_day').value;
+		//data.register_birthdate_month = document.getElementById('register_birthdate_month').value;
+		//data.register_birthdate_year = document.getElementById('register_birthdate_year').value;
+		//data.male = document.getElementById("register_male").checked;
 		data.email = document.getElementById('register_email').value;
 		data.pwd = document.getElementById('register_password').value;
 		data.c_pwd = document.getElementById('register_confirm_password').value;
@@ -50,7 +50,7 @@ obj.formSignup = function(){
 			document.getElementById('problem_confirm_pwd').innerHTML="";//on supprime le message d'erreur au cas où il y ait
 			document.getElementById('couleur_register_pwd').className="form-group col-md-6 has-success";//mettre case en vert pwd et c pwd
 			document.getElementById('couleur_register_confirm_pwd').className="form-group col-md-6 has-success";
-			obj.replace_content_by_animation_GIF_loader("signupButton");//pour remplacer le bouton par un chargement
+			obj.replace_content_by_animation_GIF_loader("signupButtonAjaxLoader");//pour remplacer le bouton par un chargement
 			obj.post(data, obj.log_callback);
 		}
 
@@ -72,6 +72,7 @@ obj.log_callback = function () {
 		if (r.categorie == "SUCCESS"){
 			if(r.suc_methode == "SIGNIN"){
 				console.log('connected !');
+				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
 				window.location = "/html/accueil.html";
 			}else if(r.suc_methode == "SIGNUP"){	
 				console.log('Registred !');
@@ -82,7 +83,7 @@ obj.log_callback = function () {
 			if(r.err_methode == "SIGNIN"){
 				console.log(r.err_message);
 				console.log(r.err_ligne);
-				document.getElementById("signinAjaxLoader").innerHTML='<button class="btn btn-lg btn-primary btn-block" type="submit" id="signinButton" >Sign in</button><div id="signinError" class="text-danger"></div>';
+				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
 				document.getElementById("signinError").innerHTML="Your login or password are false.";
 			}else if(r.err_methode == "SIGNUP"){	
 				console.log(r.err_message);
