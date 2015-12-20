@@ -94,7 +94,7 @@ obj.log_callback = function () {
 obj.replace_content_by_animation_GIF_loader = function(id){
 	contenuHTML.string = document.getElementById(id).innerHTML; // objet contenuHTML créé en haut du doc
 	contenuHTML.id = id;
-	document.getElementById(id).innerHTML = '<img src="./images/ajax-loader.gif" style="height:auto width:auto" >';
+	document.getElementById(id).innerHTML = '<img src="./images/ajax-loader-mid.gif" style="height:auto width:auto" >';
 };
 
 window.onload = function(){
