@@ -97,6 +97,7 @@ exports.signin = function(data, res){//fonction pour ajouter un USER
 				db.close();
 			});	
 		}    
+
 	});
 };
 // fin RCU - 09/08/2015 - Ajout fonction sign-in, pour se connecter à son compte
