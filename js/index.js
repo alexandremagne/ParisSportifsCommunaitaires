@@ -3,13 +3,13 @@ var data = {} //objet transmis au routeur
 var contenuHTML = {} // Contient le code html pour remplacer le gif annimé
 
 obj.start = function(){
-	//obj.remplirDateFormulaire();
+	obj.remplirDateFormulaire();
 	obj.formSignin();
 	obj.formSignup();
 };
 
 obj.remplirDateFormulaire = function(){
-	for(var i = new Date().getFullYear(); i >1989; i--){
+	for(var i = new Date().getFullYear(); i >1900; i--){
 		document.getElementById("register_birthdate_year").innerHTML+= "<option value="+i+">"+i+"</option>";
 	}
 	for(var i = 1; i <32; i++){
@@ -34,9 +34,9 @@ obj.formSignup = function(){
 		data.action = "signup"; // action a traité pour le routeur
 		data.pseudo = document.getElementById('register_name').value;
 		//data.firstname = document.getElementById('register_firstname').value;
-		//data.register_birthdate_day = document.getElementById('register_birthdate_day').value;
-		//data.register_birthdate_month = document.getElementById('register_birthdate_month').value;
-		//data.register_birthdate_year = document.getElementById('register_birthdate_year').value;
+		data.register_birthdate_day = document.getElementById('register_birthdate_day').value;
+		data.register_birthdate_month = document.getElementById('register_birthdate_month').value;
+		data.register_birthdate_year = document.getElementById('register_birthdate_year').value;
 		//data.male = document.getElementById("register_male").checked;
 		data.email = document.getElementById('register_email').value;
 		data.pwd = document.getElementById('register_password').value;
@@ -72,15 +72,18 @@ obj.log_callback = function () {
 		if (r.categorie == "SUCCESS"){
 			if(r.suc_methode == "SIGNIN"){				
 				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
+				document.getElementById('colorLogin').className="form-group has-success"; //mettre case en rouge pwd et pseudo (innutile je pense vu que l'on redirige)
 				window.location = "/html/accueil.html";
 			}else if(r.suc_methode == "SIGNUP"){					
 				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
+				
 				window.location = "/html/accueil.html";
 			}		
 		}else if(r.categorie == "ERROR"){
 			if(r.err_methode == "SIGNIN"){
 				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
 				document.getElementById("signinError").innerHTML="Your login or password are false.";
+				document.getElementById('colorLogin').className="form-group has-error"; //mettre case en rouge pwd et pseudo
 			}else if(r.err_methode == "SIGNUP"){		
 				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
 			}		

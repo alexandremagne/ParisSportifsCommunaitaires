@@ -56,9 +56,11 @@
 
           <form id="formSignin" class="form-signin" role="form">
             <h2 class="form-signin-heading">Please sign in</h2>
-            <input type="text" class="form-control" placeholder="Login" id="formLogin" required autofocus>
-            </br>
-            <input type="password" class="form-control" placeholder="Password" id="formPassword" required>
+            <div class="form-group" id="colorLogin">
+              <input type="text" class="form-control" placeholder="Login" id="formLogin" required autofocus>
+              </br>
+              <input type="password" class="form-control" placeholder="Password" id="formPassword" required>
+            </div>
             <label class="checkbox">
               <input type="checkbox" value="remember-me" id="formRememberMe"> Remember me
             </label>
@@ -96,6 +98,43 @@
                       <div class="form-group col-md-12">
                         <label class="" for="register_email">Enter your Email:</label>
                         <input type="email" class="form-control" id="register_email" placeholder="Email" required>
+                      </div>
+
+                      <div class="col-md-12">
+                        <hr>
+                      </div> 
+
+                      <div class="form-group col-md-4">
+                        <label for="register_birthdate_day">Day</label>
+                        <select class="form-control" id="register_birthdate_day">
+                          <option value="na">Day</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group col-md-4">
+                        <label for="register_birthdate_month">Month</label>
+                        <select class="form-control" id="register_birthdate_month">
+                        <option value="na">Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                     </div>
+
+                     <div class="form-group col-md-4">
+                        <label for="register_birthdate_year">Year</label>
+                        <select class="form-control" id="register_birthdate_year">
+                          <option value="na">Year</option>
+                        </select>
                       </div>
 
                       <div class="col-md-12">

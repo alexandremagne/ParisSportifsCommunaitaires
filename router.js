@@ -190,12 +190,15 @@ function () {
 	}
 };
 
-var a = {a: "arg1" , b: 3 };
+var a = {a: "arg1" , b: 3 }; 
 
 var verificationFormulaireRegister = function(obj1,obj2){
 	obj1.pseudo = obj2.pseudo;
 	obj1.email = obj2.email;
 	obj1.pwd = obj2.pwd;
+	obj1.BDjj = obj2.register_birthdate_day
+	obj1.BDmm = obj2.register_birthdate_month
+	obj1.BDyy = obj2.register_birthdate_year
 	//date creation
 	obj1.dateCreation = new Date().getTime();
 	obj1.dateDerniereConnexion = new Date().getTime();
