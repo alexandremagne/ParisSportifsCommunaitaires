@@ -93,7 +93,7 @@ exports.signin = function(data, res){//fonction pour ajouter un USER
 			}else{
 				res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "4", err_message:'Login or password are false !'}));
 			}
-			db.close();
+			//db.close();
 		});	    
 	});
 };

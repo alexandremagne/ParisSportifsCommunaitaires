@@ -80,8 +80,9 @@ check_cookie:
 	function (ret) {		
 		if (ret) {				
 			this.read_file();			
-		}else{			
-			this.path = "./index.html";
+		}else{	
+			console.log("cookie non valable - TODO");
+			//this.path = "./index.html";
 			this.read_file();			
 		}
 	},
