@@ -71,7 +71,7 @@ obj.log_callback = function () {
 		var r = JSON.parse(this.responseText);		
 		if (r.categorie == "SUCCESS"){
 			if(r.suc_methode == "SIGNIN"){				
-				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
+				document.getElementById(contenuHTML.id).innerHTML = '<div class="alert alert-success alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>Signed successfully!</strong> you are being redirected !</div>';//pour remettre le bouton originel (car gif qui tourne)
 				document.getElementById('colorLogin').className="form-group has-success"; //mettre case en rouge pwd et pseudo (innutile je pense vu que l'on redirige)
 				window.location = "/html/home.html";
 			}else if(r.suc_methode == "SIGNUP"){					
