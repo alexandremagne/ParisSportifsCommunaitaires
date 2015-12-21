@@ -80,11 +80,12 @@ check_cookie:
 	function (ret) {		
 		if (ret) {				
 			this.read_file();			
-		}else{	
-			console.log("cookie non valable - TODO");
-			//this.path = "./index.html";
-			this.read_file();			
-		}
+		}else{			
+		this.resp.writeHead(301,
+		  {Location: '../index.html'}
+		);
+		this.resp.end();	
+				}
 	},
 
 post_method:
@@ -161,7 +162,7 @@ load_file:
 						util.log("ERROR - Problem reading file : " + e);
 					} else {
 						_this.file = d;
-						//util.puts("GET on path : " + util.inspect(_this.path));
+						util.puts("GET on path : " + util.inspect(_this.path));
 						_this.file_processing();
 			} });
 			} else {

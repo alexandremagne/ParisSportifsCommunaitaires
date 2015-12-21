@@ -65,8 +65,7 @@ exports.signin = function(data, res){//fonction pour ajouter un USER
 					throw err;
 					res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "2", err_message:ERR_CONNECTION_BASE}));
 				}else{
-					if (results[0]){//si on trouve bien le login et le PW associé dans la base de donnée 
-						console.log(results[0]);
+					if (results[0]){//si on trouve bien le login et le PW associé dans la base de donnée 						
 						var cookieValue =  data.formLogin.substring(0,3) + Math.floor(Math.random() * 100000000);//pour cookieName
 						if (data.formRememberMe == true){
 							var cookieExpire = new Date(new Date().getTime()+ 365*24*60*60*1000).toUTCString();//si la case rememberme est cochée, 1 an
@@ -75,7 +74,7 @@ exports.signin = function(data, res){//fonction pour ajouter un USER
 						}	
 						console.log(cookieExpire);		
 						collection.update(
-							{login:data.formLogin, pwd:data.formPassword},
+							{pseudo:data.formLogin, pwd:data.formPassword},
 							{$set:
 								{					 					 
 								 rememberme: data.formRememberMe,
@@ -94,7 +93,7 @@ exports.signin = function(data, res){//fonction pour ajouter un USER
 						res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "4", err_message:'Login or password are false !'}));
 					}
 				}
-				db.close();
+				//db.close();
 			});	
 		}    
 
@@ -117,7 +116,7 @@ exports.valid_cookie = function(c, obj, fct){
 	    	res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "71", err_message:ERR_CONNECTION_BASE}));
 	    }	
 		var collection = db.collection(COLLECTIONNAME);
-		c = c.split("cookieName=");//car cookieName=rom19282839" par excemple donc on eneleve le cookieName
+		c = c.split("cookieName=");//car cookieName=rom19282839" par excemple donc on eneleve le cookieName		
 		 collection.find({cookieValue: c[1]}).toArray(function(err, results) {
 		 if (err){		 	
 		 	obj[fct](false);	 
