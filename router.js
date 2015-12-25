@@ -130,7 +130,7 @@ cb_cookie:
 			}else if(b.action == "SENDMESSCHATROOM"){
 				var objDb = {};//on cree nouvel objet pour etre sur qu on insere bien ce que l on veut dans la base : pseudo, mail...
 				verificationFormulaireSendMessChatRoom(objDb,b);								
-				db.sendMessChatRoom(objDb, this.resp);
+				db.sendMessChatRoom(objDb, this.resp, this.req.headers.cookie);
 			}else{
 				util.log("INFO - Action not found : " + b.ac);
 				this.resp.end(JSON.stringify({message:"erreurCookie"}));

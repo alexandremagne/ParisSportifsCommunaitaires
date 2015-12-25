@@ -168,48 +168,75 @@ exports.getChatRoom = function(res){//fonction pour ajouter un USER
 	});
 };
 
-exports.sendMessChatRoom = function(data, res){
+exports.sendMessChatRoom = function(data, res, cookie){
 	var NOM_METHODE = "SENDMESSCHATROOM";	
 	MongoClient.connect(ID_MONGO, function(err, db) {
 	    if(err){
 	    	throw err;
 	    	res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "1", err_message:ERR_CONNECTION_BASE}));
-	    }else{	
-			var collection = db.collection(COLLECTIONNAMECHATROOM);
-			collection.update(
-			{name:"chatRoom"},
-			{$push:
-				{					 					 
-				 conversation: [data.pseudo, data.date, data.message]
-				}
-			},
-			{upsert: false}, function(err, doc){
-			if (err){
-				throw err;
-				res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "2", err_message:'erreur methode update inconnue'}));
-			}else{
-				collection.find({name:"chatRoom"}).toArray(function(err, results){			
-				if (err) {
-					res.writeHead(503, {"Content-Type": "application/json" });
-					throw err;
-					res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "3", err_message:ERR_CONNECTION_BASE}));
-				}else{					
-					if (results[0]){					
-						res.writeHead(200, {"Content-Type": "'text/plain'"});
-						res.end(JSON.stringify({categorie:CATEGORIE_OK,suc_methode:NOM_METHODE, data:results[0].conversation}));
+	    }else{
+	    	getPseudoViaCookie(cookie, function(pseudo){
+				var collection = db.collection(COLLECTIONNAMECHATROOM);
+				collection.update(
+					{name:"chatRoom"},
+					{$push:
+						{					 					 
+						 conversation: [pseudo, data.date, data.message]
+						}
+					},
+					{upsert: false}, function(err, doc){
+					if (err){
+						throw err;
+						res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "2", err_message:'erreur methode update inconnue'}));
 					}else{
-						res.writeHead(200, {"Content-Type": "application/json" });
-						res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "4", err_message:'no messages'}));
-					}
-				}
-				//db.close();
-				});//find
-			}//else
-			}); // fin update
+						collection.find({name:"chatRoom"}).toArray(function(err, results){			
+						if (err) {
+							res.writeHead(503, {"Content-Type": "application/json" });
+							throw err;
+							res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "3", err_message:ERR_CONNECTION_BASE}));
+						}else{					
+							if (results[0]){					
+								res.writeHead(200, {"Content-Type": "'text/plain'"});
+								res.end(JSON.stringify({categorie:CATEGORIE_OK,suc_methode:NOM_METHODE, data:results[0].conversation}));
+							}else{
+								res.writeHead(200, {"Content-Type": "application/json" });
+								res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "4", err_message:'no messages'}));
+							}
+						}
+						//db.close();
+						});//find			
+					}//else
+				}); // fin update
+			});//getPseudoViaCookie fonction
 		}
 	});
 };
 // RCU - 23/12/2015 - fin
 
+/**
+* RCU 25/12/2015 - recuperation pseudo via cookie c
+*/
 
-
+getPseudoViaCookie = function(c, fct){
+	var NOM_METHODE = "GETPSEUDOVIACOOKIE";	
+	MongoClient.connect(ID_MONGO, function(err, db) {
+	    if(err){
+	    	throw err;
+	    	res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "1", err_message:ERR_CONNECTION_BASE}));
+	    }else{	
+			var collection = db.collection(COLLECTIONNAME);
+			c = c.split("cookieName=");//car cookieName=rom19282839" par excemple donc on eneleve le cookieName		
+			collection.find({cookieValue: c[1]}).toArray(function(err, results) {
+			if (err){		 	
+				fct("false");	 
+			}else if (results[0]){	
+				var pseudo = results[0].pseudo;
+				fct(pseudo);	 
+			}else if (!results[0]){		 	
+				fct("false");	 
+			}
+		})
+		}//else
+});
+};
+//fin RCU 25/12/2015
