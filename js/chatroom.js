@@ -3,7 +3,7 @@ var data = {} //objet transmis au routeur
 var contenuHTML = {} // Contient le code html pour remplacer le gif annimé
 
 obj.start = function(){
-	obj.getMessageChatRoom();
+	setInterval(obj.getMessageChatRoom, 3000);
 	obj.envoyerMessageChatRoomFormId();
 };
 
@@ -14,7 +14,7 @@ obj.getMessageChatRoom = function(){
 
 obj.envoyerMessageChatRoomFormId = function(){
 	document.getElementById('envoyerMessageChatRoomFormId').onsubmit = function(event){
-		obj.replace_content_by_animation_GIF_loader('btnChatAjaxLoaderId');
+		//obj.replace_content_by_animation_GIF_loader('btnChatAjaxLoaderId');
 		data.action = "SENDMESSCHATROOM"
 		data.message = document.getElementById('btn-input').value;
 		obj.post(data, obj.log_callback);
@@ -40,7 +40,7 @@ obj.log_callback = function () {
 			}else if(r.suc_methode == "SENDMESSCHATROOM"){
 				console.log(r);
 				document.getElementById('btn-input').value = "";
-				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
+				//document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
 				obj.remplirChatRoom(r.data);
 			}	
 		}else if(r.categorie == "ERROR"){
@@ -48,7 +48,7 @@ obj.log_callback = function () {
 				console.log("error GETCHATROOM");
 			}else if(r.err_methode == "SENDMESSCHATROOM"){
 				console.log("error SENDMESSCHATROOM");
-				document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
+				//document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
 			}
 		}
 	}
