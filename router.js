@@ -105,14 +105,14 @@ post_method:
 go_post:
 	function (b) {
 		b = JSON.parse(b);
-		this.b = b;
+		this.b = b;		
 		if(b.action == "signin") {
 			db.signin(b, this.resp);
-		}else if(b.action = "signup"){
+		}else if(b.action == "signup"){			
 			var objDb = {};//on cree nouvel objet pour etre sur qu on insere bien ce que l on veut dans la base : pseudo, mail...
 			verificationFormulaireRegister(objDb,b);			
 			db.signup(objDb, this.resp);
-		}else {
+		}else {			
 			db.valid_cookie(this.req.headers.cookie, this, "cb_cookie");
 		}	
 },
@@ -125,14 +125,18 @@ cb_cookie:
 			if (b.action == 'FORMCHECKSYMBOL'){
 				stock.getStock(this, "coursActuel");
 				return;
-			}else if(b.action == "azeaze"){
-				db.azeaze(this.resp, this.req.headers.cookie);
+			}else if(b.action == "GETCHATROOM"){							
+				db.getChatRoom(this.resp);
+			}else if(b.action == "SENDMESSCHATROOM"){
+				var objDb = {};//on cree nouvel objet pour etre sur qu on insere bien ce que l on veut dans la base : pseudo, mail...
+				verificationFormulaireSendMessChatRoom(objDb,b);								
+				db.sendMessChatRoom(objDb, this.resp);
+			}else{
+				util.log("INFO - Action not found : " + b.ac);
+				this.resp.end(JSON.stringify({message:"erreurCookie"}));
 			}
-			util.log("INFO - Action not found : " + b.ac);
-			this.resp.end(JSON.stringify({message:"erreurCookie"}));
-		}
-				
-		
+
+		}		
 		//this.resp.writeHead(501, {"Content -Type": "application/json"});
 		//this.resp.end(JSON.stringify({message: "nocookie"}));
 		
@@ -209,4 +213,9 @@ var verificationFormulaireRegister = function(obj1,obj2){
 	obj1.dateLock = -1;
 	obj1.flagLock = 0;//non bloqué
 	obj1.nombreTentative = 0;
-}
+};
+var verificationFormulaireSendMessChatRoom = function(obj1, obj2){
+	obj1.date = (new Date()).getTime();
+	obj1.message = obj2.message;
+	obj1.pseudo = "null";
+};
