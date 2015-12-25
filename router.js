@@ -144,8 +144,7 @@ cb_cookie:
 
 
 read_file:
-function () {
-	console.log(util.inspect(this.pathname));
+function () {	
 	if (!this.pathname[0] || this.pathname[0] == "nodejs") {
 		//util.log("ALERT - Hack attempt, resquest on : " + util.inspect(this.pathname)
 		this.pathname = "./index.html";
