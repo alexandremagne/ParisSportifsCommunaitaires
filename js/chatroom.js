@@ -3,7 +3,8 @@ var data = {} //objet transmis au routeur
 var contenuHTML = {} // Contient le code html pour remplacer le gif annimé
 
 obj.start = function(){
-	setInterval(obj.getMessageChatRoom, 3000);
+	obj.flagScroll = 0;
+	setInterval(obj.getMessageChatRoom, 5000);
 	obj.envoyerMessageChatRoomFormId();
 };
 
@@ -38,7 +39,7 @@ obj.log_callback = function () {
 				console.log(r);
 				obj.remplirChatRoom(r.data);
 			}else if(r.suc_methode == "SENDMESSCHATROOM"){
-				console.log(r);
+				console.log(r);				
 				document.getElementById('btn-input').value = "";
 				//document.getElementById(contenuHTML.id).innerHTML = contenuHTML.string;//pour remettre le bouton originel (car gif qui tourne)
 				obj.remplirChatRoom(r.data);
@@ -61,47 +62,58 @@ obj.replace_content_by_animation_GIF_loader = function(id){
 };
 
 obj.remplirChatRoom = function(tab){
-	document.getElementById("chatRoomId").innerHTML = "";	
-	for(var i = tab.length-1; i > -1; i--){
-		var string = "";
-		if(i%2 == 0){
-			string = '<li class="left clearfix">'
-			+'<span class="chat-img pull-left">'
-			+'<img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle">'
-			+'</span>'
-			+'<div class="chat-body clearfix">'
-			+'<div class="header">'
-			+'<strong class="primary-font">'+tab[i][0]+'</strong>'
-			+'<small class="pull-right text-muted">'
-			+'<i class="fa fa-clock-o fa-fw"></i> '+timeSince(tab[i][1])+' ago'
-			+'</small>'
-			+'</div>'
-			+'<p>'
-			+''+tab[i][2]+''
-			+'</p>'
-			+'</div>'
-			+'</li>';
-		}			
-		else{
-			string = '<li class="right clearfix">'
-			+'<span class="chat-img pull-right">'
-			+'<img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle">'
-			+'</span>'
-			+'<div class="chat-body clearfix">'
-			+'<div class="header">'
-			+'<small class=" text-muted">'
-			+'<i class="fa fa-clock-o fa-fw"></i>'+timeSince(tab[i][1])+' ago</small>'
-			+'<strong class="pull-right primary-font">'+tab[i][0]+'</strong>'
-			+'</div>'
-			+'<p>'
-			+''+tab[i][2]+''
-			+'</p>'
-			+'</div>'
-			+'</li>'
-		}
-		document.getElementById("chatRoomId").innerHTML += string;
+	if(document.getElementById("loadStatutId")){//pour enlever le chargement....
+		document.getElementById("chatRoomId").innerHTML = "";
 	}
+	var string = "";	
+	for(var i = 0; i < tab.length; i++){			
+			if(i%2 == 0){
+				string = '<li class="left clearfix" id="messageIdNumero_'+i+'">'
+				+'<span class="chat-img pull-left">'
+				+'<img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle">'
+				+'</span>'
+				+'<div class="chat-body clearfix">'
+				+'<div class="header">'
+				+'<strong class="primary-font">'+tab[i][0]+'</strong>'
+				+'<small class="pull-right text-muted">'
+				+'<i class="fa fa-clock-o fa-fw"></i> '+timeSince(tab[i][1])+' ago'
+				+'</small>'
+				+'</div>'
+				+'<p>'
+				+''+tab[i][2]+''
+				+'</p>'
+				+'</div>'
+				+'</li>';
+			}			
+			else{
+				string = '<li class="right clearfix" id="messageIdNumero_'+i+'">'
+				+'<span class="chat-img pull-right">'
+				+'<img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle">'
+				+'</span>'
+				+'<div class="chat-body clearfix">'
+				+'<div class="header">'
+				+'<small class=" text-muted">'
+				+'<i class="fa fa-clock-o fa-fw"></i>'+timeSince(tab[i][1])+' ago</small>'
+				+'<strong class="pull-right primary-font">'+tab[i][0]+'</strong>'
+				+'</div>'
+				+'<p>'
+				+''+tab[i][2]+''
+				+'</p>'
+				+'</div>'
+				+'</li>'
+			}
+			if(document.getElementById("chatRoomId").innerHTML.indexOf("messageIdNumero_"+i) == -1){//si numero id pas dans le chat
+				console.log("nouveau message");						
+				document.getElementById("chatRoomId").innerHTML += string;
+				obj.flagScroll = 0;
+			}else{
+				console.log("pas de nouveau message");							
+			}
+	}
+	if(obj.flagScroll == 0) document.getElementById("scrollElementChat").scrollTop = 100000;
+	obj.flagScroll = 1;
 };
+
 
 timeSince = function(date) {
     if (typeof date !== 'object') {

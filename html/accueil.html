@@ -513,12 +513,12 @@
                             </div>
                         </div>
                         <!-- /.panel-heading -->
-                        <div class="panel-body">
+                        <div class="panel-body" id="scrollElementChat">
                             <ul class="chat" id="chatRoomId">
                                 <li class="left clearfix">                                   
                                     <div class="chat-body clearfix">
                                         <div class="header">
-                                            <strong class="primary-font">Chargement...</strong>
+                                            <strong class="primary-font" id="loadStatutId">Chargement...</strong>
                                         </div>
                                     </div>
                                 </li>                                
@@ -528,7 +528,7 @@
                         <form id="envoyerMessageChatRoomFormId">
                         <div class="panel-footer">
                             <div class="input-group">
-                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." style="font-size: 16px;"/>
                                 <span class="input-group-btn" id="btnChatAjaxLoaderId">
                                     <button class="btn btn-warning btn-sm" id="btn-chat">
                                         Send

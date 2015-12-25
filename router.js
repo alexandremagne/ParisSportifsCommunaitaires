@@ -122,7 +122,7 @@ cb_cookie:
 		if (ret) {
 			var cookie = this.req.headers.cookie;
 			var cookieExpire = new Date(new Date().getTime()+900000).toUTCString();//
-			this.resp.writeHead(200, {"Set-Cookie" : ""+cookie+";expires="+cookieExpire});//on ecrit le cookie chez le client
+			this.resp.writeHead(200, {"Set-Cookie" : ""+cookie+";expires="+cookieExpire});//on  remet à jour la date d'expiration du cookie
 			if (b.action == 'FORMCHECKSYMBOL'){
 				stock.getStock(this, "coursActuel");
 				return;

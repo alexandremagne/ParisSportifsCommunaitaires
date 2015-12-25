@@ -162,7 +162,7 @@ exports.getChatRoom = function(res){//fonction pour ajouter un USER
 						res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "4", err_message:'no messages'}));
 					}
 				}
-				//db.close();
+				db.close();
 			});	
 		}    
 	});
