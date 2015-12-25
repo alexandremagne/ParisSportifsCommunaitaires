@@ -122,7 +122,7 @@ exports.valid_cookie = function(c, obj, fct){
 		 if (err){		 	
 		 	obj[fct](false);	 
 		 }else if (results[0]){		 	
-		 	obj[fct](true);	 
+		 	obj[fct](true); 
 		 }else if (!results[0]){		 	
 		 	obj[fct](false);	 
 		 }		 
@@ -195,11 +195,9 @@ exports.sendMessChatRoom = function(data, res, cookie){
 							throw err;
 							res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "3", err_message:ERR_CONNECTION_BASE}));
 						}else{					
-							if (results[0]){					
-								res.writeHead(200, {"Content-Type": "'text/plain'"});
+							if (results[0]){													
 								res.end(JSON.stringify({categorie:CATEGORIE_OK,suc_methode:NOM_METHODE, data:results[0].conversation}));
-							}else{
-								res.writeHead(200, {"Content-Type": "application/json" });
+							}else{								
 								res.end(JSON.stringify({categorie:CATEGORIE_ERREUR,err_methode: NOM_METHODE, err_ligne: "4", err_message:'no messages'}));
 							}
 						}

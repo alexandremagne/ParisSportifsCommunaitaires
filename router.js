@@ -81,11 +81,9 @@ check_cookie:
 		if (ret) {				
 			this.read_file();			
 		}else{			
-		this.resp.writeHead(301,
-		  {Location: '../index.html'}
-		);
-		this.resp.end();	
-				}
+			this.resp.writeHead(301, {Location: '../index.html'});
+			this.resp.end();	
+		}
 	},
 
 post_method:
@@ -121,7 +119,10 @@ go_post:
 cb_cookie:
 	function (ret) {	
 		var b = this.b;
-		if (ret) {	
+		if (ret) {
+			var cookie = this.req.headers.cookie;
+			var cookieExpire = new Date(new Date().getTime()+900000).toUTCString();//
+			this.resp.writeHead(200, {"Set-Cookie" : ""+cookie+";expires="+cookieExpire});//on ecrit le cookie chez le client
 			if (b.action == 'FORMCHECKSYMBOL'){
 				stock.getStock(this, "coursActuel");
 				return;
@@ -133,13 +134,11 @@ cb_cookie:
 				db.sendMessChatRoom(objDb, this.resp, this.req.headers.cookie);
 			}else{
 				util.log("INFO - Action not found : " + b.ac);
-				this.resp.end(JSON.stringify({message:"erreurCookie"}));
+				this.resp.end(JSON.stringify({message:"action not found"}));
 			}
-
-		}		
-		//this.resp.writeHead(501, {"Content -Type": "application/json"});
-		//this.resp.end(JSON.stringify({message: "nocookie"}));
-		
+		}else{	
+			this.resp.end(JSON.stringify({message:"nocookie"}));
+		}			
 	},
 
 
