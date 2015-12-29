@@ -65,53 +65,59 @@ obj.remplirChatRoom = function(tab){
 	if(document.getElementById("loadStatutId")){//pour enlever le chargement....
 		document.getElementById("chatRoomId").innerHTML = "";
 	}
-	var string = "";	
+	var string = "";
+	var stringTmp = "";
 	for(var i = 0; i < tab.length; i++){			
-			if(i%2 == 0){
-				string = '<li class="left clearfix" id="messageIdNumero_'+i+'">'
-				+'<span class="chat-img pull-left">'
-				+'<img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle">'
-				+'</span>'
-				+'<div class="chat-body clearfix">'
-				+'<div class="header">'
-				+'<strong class="primary-font">'+tab[i][0]+'</strong>'
-				+'<small class="pull-right text-muted">'
-				+'<i class="fa fa-clock-o fa-fw"></i> '+timeSince(tab[i][1])+' ago'
-				+'</small>'
-				+'</div>'
-				+'<p>'
-				+''+tab[i][2]+''
-				+'</p>'
-				+'</div>'
-				+'</li>';
-			}			
-			else{
-				string = '<li class="right clearfix" id="messageIdNumero_'+i+'">'
-				+'<span class="chat-img pull-right">'
-				+'<img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle">'
-				+'</span>'
-				+'<div class="chat-body clearfix">'
-				+'<div class="header">'
-				+'<small class=" text-muted">'
-				+'<i class="fa fa-clock-o fa-fw"></i>'+timeSince(tab[i][1])+' ago</small>'
-				+'<strong class="pull-right primary-font">'+tab[i][0]+'</strong>'
-				+'</div>'
-				+'<p>'
-				+''+tab[i][2]+''
-				+'</p>'
-				+'</div>'
-				+'</li>'
-			}
-			if(document.getElementById("chatRoomId").innerHTML.indexOf("messageIdNumero_"+i) == -1){//si numero id pas dans le chat
-				console.log("nouveau message");						
-				document.getElementById("chatRoomId").innerHTML += string;
-				obj.flagScroll = 0;
-			}else{
-				console.log("pas de nouveau message");							
-			}
+		if(i%2 == 0){
+			string = '<li class="left clearfix" id="messageIdNumero_'+i+'">'
+			+'<span class="chat-img pull-left">'
+			+'<img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle">'
+			+'</span>'
+			+'<div class="chat-body clearfix">'
+			+'<div class="header">'
+			+'<strong class="primary-font">'+tab[i][0]+'</strong>'
+			+'<small class="pull-right text-muted">'
+			+'<i class="fa fa-clock-o fa-fw"></i> '+timeSince(tab[i][1])+' ago'
+			+'</small>'
+			+'</div>'
+			+'<p>'
+			+''+tab[i][2]+''
+			+'</p>'
+			+'</div>'
+			+'</li>';
+		}			
+		else{
+			string = '<li class="right clearfix" id="messageIdNumero_'+i+'">'
+			+'<span class="chat-img pull-right">'
+			+'<img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle">'
+			+'</span>'
+			+'<div class="chat-body clearfix">'
+			+'<div class="header">'
+			+'<small class=" text-muted">'
+			+'<i class="fa fa-clock-o fa-fw"></i>'+timeSince(tab[i][1])+' ago</small>'
+			+'<strong class="pull-right primary-font">'+tab[i][0]+'</strong>'
+			+'</div>'
+			+'<p>'
+			+''+tab[i][2]+''
+			+'</p>'
+			+'</div>'
+			+'</li>'
+		}
+		if(document.getElementById("chatRoomId").innerHTML == ""){//chat vide -> chargement page
+			stringTmp += string;
+		}else if(document.getElementById("chatRoomId").innerHTML.indexOf("messageIdNumero_"+i) == -1){//si numero id pas dans le chat
+			console.log("nouveau message");						
+			document.getElementById("chatRoomId").innerHTML += string;			
+			console.log(document.getElementById("scrollElementChat").scrollHeight);
+			document.getElementById("scrollElementChat").scrollTop = document.getElementById("scrollElementChat").scrollHeight;
+		}else{
+			console.log("pas de nouveau message");							
+		}
 	}
-	if(obj.flagScroll == 0) document.getElementById("scrollElementChat").scrollTop = 100000;
-	obj.flagScroll = 1;
+	if(document.getElementById("chatRoomId").innerHTML == ""){//chat vide -> chargement page
+		document.getElementById("chatRoomId").innerHTML = stringTmp;
+		setTimeout(function(){document.getElementById("scrollElementChat").scrollTop = document.getElementById("scrollElementChat").scrollHeight + 1000},2000);
+	}
 };
 
 
